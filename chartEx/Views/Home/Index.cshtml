@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<html>
+<head>
+    <link href="~/Content/morris.css" rel="stylesheet" />
+</head>
+<body>
+    <h2>Charts</h2>
+    <div class="container">
+        <div class="row">
+            <div id="sampleChart" style="height: 300px" class="col-md-6 well">
+            </div>
+            <div id="sampleChartFirst" style="height: 300px" class="col-md-6 well">
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row well">
+            <div id="sampleChartSecond" style="height: 300px" class="col-md-8">
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row well">
+            <div id="sampleChartThird" style="height: 300px" class="col-md-8">
+            </div>
+        </div>
+    </div>
+    @section scripts{
+    <script src="~/Scripts/raphael.js"></script>
+    <script src="~/Scripts/morris.js"></script>
+        <script type="text/javascript">
+            new Morris.Line({
+                    element: 'sampleChart',
+                    data:
+                        [
+                        { year: '2008', value: 45000 },
+                        { year: '2009', value: 30000 },
+                        { year: '2010', value: 55000 },
+                        { year: '2011', value: 25000 },
+                        { year: '2012', value: 60000 }
+                    ],
+                    xkey: 'year',
+                    ykeys: ['value'],
+                    labels: ['Total Expense'],
+                    preUnits: '$'
+            })
+            new Morris.Donut({
+                element: 'sampleChartFirst',
+                data:
+                    [
+                        { label: '2008', value: 45000 },
+                        { label: '2009', value: 30000},
+                        { label: '2010', value: 55000 },
+                        { label: '2011', value: 25000 },
+                        { label: '2012', value: 60000 }
+                    ],
+            })
+            new Morris.Bar({
+                element: 'sampleChartSecond',
+                data:
+                    [
+                        { name: 'First Year', income: 55000, expense: 45000 },
+                        { name: 'Second Year', income: 50000, expense: 30000 },
+                        { name: 'Third Year', income: 65000, expense: 55000 },
+                        { name: 'Fourth Year', income: 75000, expense: 25000 },
+                        { name: 'Fifth Year', income: 100000, expense: 60000 },
+                    ],
+                xkey: 'name',
+                ykeys: ['income', 'expense'],
+                labels: ['Income', 'Expense'],
+                gridTextColor: '#555',
+                barColors: ['#2d5a2d', '#ffb752'],
+                preUnits: '$'
+            })
+        </script>
+        <script type="text/javascript">
+        $.post('@Url.Action("StaticData","Home")').then
+        (function (response) {
+            new Morris.Bar({
+                element: 'sampleChartThird',
+                data: response,
+                xkey: 'Month',
+                ykeys: ['Income', 'Expense'],
+                labels: ['Income', 'Expense'],
+                gridTextColor: '#555',
+                barColors: ['#2d5a2d', '#ffb752'],
+                preUnits: '$'
+            })
+        })
+        </script>
+    }
+</body>
+</html>
